@@ -9,25 +9,40 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var degree : Double = 0
-    @State private var text : String = "Ca caille"
+    @State private var text : String = "Ca caille ! 🥶"
+    @State private var bgColor = Color.blue
     
-    func textProgress(){
-        if degree <= 0 {
-            text = "Ca caille"
-        } else if degree <= 10 {
-            text = "aaaaa"
-        }
-    }
-        
+    
     var body: some View {
-        VStack {
-            // Dynamic text
-            HStack{
-                Text(text)
+        ZStack {
+            Rectangle()
+                .ignoresSafeArea()
+                .foregroundColor(bgColor)
+            VStack {
+                // Dynamic text
+                VStack{
+                    Text(String(format: "%.0f°C", degree))
+                        .font(.largeTitle)
+                    Text(text)
+                        .font(.title)
+                }
+                // Slider Settings
+                Slider(value: $degree, in: 0...50){_ in
+                    switch degree {
+                    case 20...29:
+                        text = "C'est chill 😎"
+                        bgColor = Color.orange
+                    case 30...50:
+                        text = "Je brule !!! 🥵"
+                        bgColor = Color.red
+                    default:
+                        text = "Ca caille ! 🥶"
+                        bgColor = Color.blue
+                    }
+                }
+                .padding(.horizontal)
+                
             }
-            // Slider Settings
-            Slider(value: $degree, in: 0...50)
-            Text(String(format: "%.0f", degree))
         }
     }
 }
